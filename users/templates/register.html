@@ -1,0 +1,10 @@
+{% extends 'mailing/base.html' %}
+{% block title %}Register{% endblock %}
+{% block content %}
+<form method="post">
+    <h2>Регистрация</h2>
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+</form>
+{% endblock %}
