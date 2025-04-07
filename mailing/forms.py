@@ -1,58 +1,46 @@
 from django import forms
-from django.core.exceptions import ValidationError
 from django.forms import BooleanField, ModelForm
 
-from .models import AttemptMailing, Mailing, Message, ReceiveMail
+from mailing.models import Mailing, Message, ReceiveMail
 
 
 class StyleFormMixin:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        for fild_name, fild in self.fields.items():
-            if isinstance(fild, BooleanField):
-                fild.widget.attrs["class"] = "form-check-input"
+        for field_name, field in self.fields.items():
+            if isinstance(field, BooleanField):
+                field.widget.attrs["class"] = "form-check-input"
             else:
-                fild.widget.attrs["class"] = "form-control"
+                field.widget.attrs["class"] = "form-control"
 
 
-class EmailForm(forms.Form):
-    subject = forms.CharField(max_length=255, label="Тема письма")
-    message = forms.CharField(widget=forms.Textarea, label="Сообщение")
-    recipients = forms.CharField(widget=forms.Textarea, label="Получатели (через запятую)")
+class MessageForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = Message
+        fields = ("theme", "content")
+
+
+class RecipientForm(StyleFormMixin, ModelForm):
+    class Meta:
+        model = ReceiveMail
+        fields = ("email", "name", "comment")
 
 
 class MailingForm(StyleFormMixin, ModelForm):
     class Meta:
-        model = Message
-        fields = "__all__"
-        #exclude = ("set_is_active", "owner", "first_sending", "end_sending")
-
-
-class MessageForm(StyleFormMixin, ModelForm):
-
-    class Meta:
-
-        model = Message
-        fields = "__all__"
-
-
-class ReceiveMailForm(StyleFormMixin, ModelForm):
-
-    class Meta:
-
-        model = ReceiveMail
-        fields = "__all__"
-        exclude = ("can_blocking_client", "owner")
-
-
-class ReceiveMailModeratorForm(StyleFormMixin, ModelForm):
-    class Meta:
-
-        model = ReceiveMail
-        fields = "__all__"
-
-
-class MailingModeratorForm(StyleFormMixin, ModelForm):
-    class Meta:
         model = Mailing
-        fields = "__all__"
+        fields = ("start_mailing", "end_mailing", "status", "message", "recipients")
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop("user", None)
+        super(MailingForm, self).__init__(*args, **kwargs)
+        self.fields["end_mailing"].widget = forms.DateTimeInput(
+            attrs={"type": "datetime-local", "class": "form-control"}
+        )
+        self.fields["start_mailing"].widget = forms.DateTimeInput(
+            attrs={"type": "datetime-local", "class": "form-control"}
+        )
+
+        if user:
+            self.fields["message"].queryset = Message.objects.filter(owner=user)
+            self.fields["recipients"].queryset = ReceiveMail.objects.filter(owner=user)
