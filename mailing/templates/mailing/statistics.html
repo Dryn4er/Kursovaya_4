@@ -1,0 +1,21 @@
+{% extends 'mailing/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container">
+    <h2>Ваша статистика</h2>
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+        <div class="col">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Статистика рассылок</h5>
+                    <p class="card-text">Успешно: {{ successful }}</p>
+                    <p class="card-text">Неуспешно: {{ failed }}</p>
+                    <p class="card-text">Количество отправленных рассылок: {{ mailing_count }}</p>
+                    <p class="card-text">Всего попыток: {{ attempts }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,31 +1,21 @@
 {% extends 'mailing/base.html' %}
 {% block content %}
-{% load static %}
-
-<div class="container mt-5">
+<div class="container">
     <div class="row">
         <div class="col-6">
             <form class="row" method="post" enctype="multipart/form-data">
-                <div class="card mt-3">
-                    <div class="form-body">
+                <div class="card">
+                    <div class="card-body">
                         {% csrf_token %}
                         {{ form.as_p }}
                     </div>
                     <button type="submit" class="btn btn-primary">
                         Войти
                     </button>
-
-                    <a class="btn btn-primary mt-1" href="{% url 'mailing:message_list' %}" role="button">Отмена</a>
-
-                    <div class="card-footer">
-                        <a href="{% url 'users:password_recovery' %}">Забыли пароль?</a>
-                    </div>
-
+                    <p><a href="{% url 'users:password_reset' %}">Забыли пароль?</a></p>
                 </div>
-
             </form>
         </div>
     </div>
-
 </div>
 {% endblock %}
