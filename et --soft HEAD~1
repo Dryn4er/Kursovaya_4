@@ -1,0 +1,96 @@
+[33mcommit 7083ca0ce30ec2bfee7454a3102d666bc41eae39[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmail_feature[m[33m)[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Wed Apr 9 11:36:53 2025 +0300
+
+    Revert "default"
+    
+    This reverts commit 2b6906f0
+
+[33mcommit b8c0ccf3538ae5c96bbe9994ba5e160e1f96bf75[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Wed Apr 9 11:31:07 2025 +0300
+
+    default
+
+[33mcommit b63b9e93fa6f719d4e734e5d4df5fc1870b96436[m[33m ([m[1;31mgithub/mail_feature[m[33m)[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Wed Apr 9 11:10:05 2025 +0300
+
+    default
+
+[33mcommit 3a7f3886c180d9cfd8c2095c761c569a502330dd[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Wed Apr 9 11:09:22 2025 +0300
+
+    default
+
+[33mcommit ae1106547e739227ff36f396056bc0d9528166dd[m
+Author: Dryn4er <mr.dryn4er@gmail.com>
+Date:   Wed Apr 9 11:08:51 2025 +0300
+
+    Delete .idea directory
+
+[33mcommit 6536b623ab956c20e554430f5e758aa1f6e9050a[m
+Merge: 8698e16 d0d00d8
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Tue Apr 8 10:45:07 2025 +0300
+
+    Merge remote-tracking branch 'origin/mail_feature' into mail_feature
+    
+    # Conflicts:
+    #       .idea/modules.xml
+    #       .idea/workspace.xml
+
+[33mcommit 8698e16a4768ccb86eb908a82a4461dc9eed570d[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Tue Apr 8 10:44:25 2025 +0300
+
+    default
+
+[33mcommit d0d00d82cccd7de1b44a19c07ccea3d746d8f27b[m[33m ([m[1;31morigin/mail_feature[m[33m)[m
+Author: Dryn4er <mr.dryn4er@gmail.com>
+Date:   Mon Apr 7 16:12:28 2025 +0300
+
+    Delete .env
+
+[33mcommit 9fdde5890b747d1b8a020e1d9a55669e5338d05a[m
+Author: Dryn4er <mr.dryn4er@gmail.com>
+Date:   Mon Apr 7 16:12:17 2025 +0300
+
+    Delete .idea directory
+
+[33mcommit c2a36332ed378a8c70a1e6a6eef1b1990cb0525b[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Mon Apr 7 16:09:47 2025 +0300
+
+    default
+
+[33mcommit d7047e57e1199e73ae52dbd5726aaa3b290d137b[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Sat Apr 5 13:16:06 2025 +0300
+
+    default
+
+[33mcommit e66a7990195208fa0ebfcb7fad69a1918a102830[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Sat Apr 5 13:12:12 2025 +0300
+
+    default
+
+[33mcommit 98c0ccb0a6e75ea28f386250eb25e1c911ba7e90[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Fri Apr 4 20:13:22 2025 +0300
+
+    default
+
+[33mcommit 405ab07ad7c83496aca2a1e64033387a5dbef5a7[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Fri Apr 4 20:12:05 2025 +0300
+
+    default
+
+[33mcommit 2b6906f0d9c3df4c12829a63cd43ece94350c3bd[m[33m ([m[1;32mmain[m[33m)[m
+Author: Andrey <mr.dryn4er@gmail.com>
+Date:   Fri Apr 4 20:11:39 2025 +0300
+
+    default
