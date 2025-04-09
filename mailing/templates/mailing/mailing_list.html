@@ -13,11 +13,15 @@
                 <p class="card-text">{{ mailing.message.theme }}</p>
                 <p class="card-text">{{ mailing.message.content }}</p>
                 {% for recipient in mailing.recipients.all %}
-                <div class="card-body">
-                    <li>{{ recipient }}</li>
-                </div>
+                <li>{{ recipient }}</li>
                 {% endfor %}
                 <p class="card-text">{{ mailing.status }}</p>
+                {% if mailing.status == 'created' %}
+                    <p>{% if mailing.start_mailing %} Дата и время начала рассылки: {{ mailing.start_mailing|date:"d.m.Y H:i" }} {% endif %}</p>
+                {% elif mailing.status == 'stopped' %}
+                    <p>{% if mailing.start_mailing %} Дата и время начала рассылки: {{ mailing.start_mailing|date:"d.m.Y H:i" }} {% endif %}</p>
+                    <p>{% if mailing.end_mailing %} Дата и время окончания рассылки: {{ mailing.end_mailing|date:"d.m.Y H:i" }} {% endif %}</p>
+                {% endif %}
                 {% if perms.mailing.can_stop_mailing %}
                 <a type="button" class="btn btn-outline-primary btn-sm"
                    href="{% url 'mailing:stop_mailing' pk=mailing.pk %}">Остановить рассылку</a>

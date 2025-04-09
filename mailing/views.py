@@ -1,14 +1,14 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.views.generic import (CreateView, DeleteView, DetailView, ListView,
                                   TemplateView, UpdateView)
 
 from mailing.forms import MailingForm, MessageForm, RecipientForm
 from mailing.models import MailAttempt, Mailing, Message, ReceiveMail
-
+from django.utils import timezone
 from mailing.services import MailingService
 
 
@@ -51,6 +51,7 @@ class RecipientDetailView(LoginRequiredMixin, DetailView):
 
 class RecipientUpdateView(LoginRequiredMixin, UpdateView):
     model = ReceiveMail
+    template_name = "mailing/receive_mail_form.html"
     fields = ("email", "name", "comment")
 
     def get_success_url(self):
@@ -151,13 +152,16 @@ class MailingUpdateView(LoginRequiredMixin, UpdateView):
 
     @staticmethod
     def stop_mailing(request, pk):
-        stopped_mailing = Mailing.objects.get(pk=pk)
-        if not request.user.has_perm("mailing.can_stop_mailing"):
-            raise PermissionDenied
-        else:
-            stopped_mailing.status = "completed"
-            stopped_mailing.save()
-        return redirect(reverse("mailing:mailing_list"))
+        mailing = get_object_or_404(Mailing, pk=pk)
+
+        # Проверка прав доступа (если необходимо)
+        if request.user == mailing.owner or request.user.has_perm('mailing.can_stop_mailing'):
+            # Устанавливаем время окончания
+            mailing.end_mailing = timezone.now()
+            mailing.status = 'stopped'  # Обновляем статус, если это необходимо
+            mailing.save()
+
+        return redirect('mailing:mailing_list')
 
 
 class MailingDeleteView(LoginRequiredMixin, DeleteView):
@@ -187,25 +191,16 @@ class StatisticsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
-        mailing = Mailing.objects.filter(owner=user)
-        attempts = MailAttempt.objects.filter(mailing__in=mailing)
-        print(attempts)
-
-        successful = 0
-        failed = 0
-        mailing_count = 0
-
-        for attempt in attempts:
-            if attempt.status == "success":
-                successful += 1
-                mailing_count += attempt.mailing.recipients.count()
-            if attempt.status == "failure":
-                failed += 1
-
+        mailings = Mailing.objects.filter(owner=user)
+        attempts = MailAttempt.objects.filter(mailing__in=mailings)
+        successful = attempts.filter(status="success").count()
+        failed = attempts.filter(status="failure").count()
+        mailing_count = sum(attempt.mailing.recipients.count() for attempt in attempts if attempt.status == "success")
         context["successful"] = successful
         context["failed"] = failed
         context["mailing_count"] = mailing_count
         context["attempts"] = attempts.count()
+
         return context
 
-# Create your views here.
+

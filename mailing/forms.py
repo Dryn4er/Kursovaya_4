@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django import forms
 from django.forms import BooleanField, ModelForm
 
@@ -29,18 +31,35 @@ class RecipientForm(StyleFormMixin, ModelForm):
 class MailingForm(StyleFormMixin, ModelForm):
     class Meta:
         model = Mailing
-        fields = ("start_mailing", "end_mailing", "status", "message", "recipients")
+        fields = ("message", "recipients")  # Указываем только нужные поля
 
     def __init__(self, *args, **kwargs):
-        user = kwargs.pop("user", None)
+        self.user = kwargs.pop("user", None)  # Сохраняем пользователя для дальнейшего использования
         super(MailingForm, self).__init__(*args, **kwargs)
-        self.fields["end_mailing"].widget = forms.DateTimeInput(
-            attrs={"type": "datetime-local", "class": "form-control"}
-        )
-        self.fields["start_mailing"].widget = forms.DateTimeInput(
-            attrs={"type": "datetime-local", "class": "form-control"}
+        if self.user:
+            self.fields["message"].queryset = Message.objects.filter(owner=self.user)
+            self.fields["recipients"].queryset = ReceiveMail.objects.filter(owner=self.user)
+
+        self.fields["start_mailing"] = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
+        self.fields["end_mailing"] = forms.DateTimeField(widget=forms.HiddenInput(), required=False)
+        self.fields["status"] = forms.ChoiceField(
+            choices=[('created', 'Создана')],
+            initial='created',
+            widget=forms.HiddenInput()
         )
 
-        if user:
-            self.fields["message"].queryset = Message.objects.filter(owner=user)
-            self.fields["recipients"].queryset = ReceiveMail.objects.filter(owner=user)
+    def save(self, commit=True):
+        mailing_instance = super(MailingForm, self).save(commit=False)
+        mailing_instance.status = 'created'
+        mailing_instance.start_mailing = timezone.now()
+        mailing_instance.end_mailing = timezone.now()
+
+        if commit:
+            mailing_instance.save()
+
+        return mailing_instance
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+
+        return form
