@@ -196,6 +196,7 @@ class StatisticsView(TemplateView):
         successful = attempts.filter(status="success").count()
         failed = attempts.filter(status="failure").count()
         mailing_count = sum(attempt.mailing.recipients.count() for attempt in attempts if attempt.status == "success")
+
         context["successful"] = successful
         context["failed"] = failed
         context["mailing_count"] = mailing_count
