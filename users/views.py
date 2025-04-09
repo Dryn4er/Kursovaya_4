@@ -45,7 +45,7 @@ def email_verification(request, token):
 class UserUpdateView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = UserUpdateForm
-    success_url = reverse_lazy("users:user_detail")
+    success_url = reverse_lazy("users:profile")
 
     def get_form_class(self):
         return UserUpdateForm
@@ -63,6 +63,14 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
             block_user.is_active = False
             block_user.save()
         return redirect(reverse("mailing:home"))
+
+
+def view_profile(request):
+    user = request.user
+    context = {
+        "user": user,
+    }
+    return render(request, context=context, template_name="users/profile.html")
 
 
 class UserListView(LoginRequiredMixin, ListView):
