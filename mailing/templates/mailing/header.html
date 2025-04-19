@@ -7,10 +7,10 @@
     <h5 class="my-0 mr-md-auto font-weight-normal">Skymessenger</h5>
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:home' %}">Главная</a>
-        <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:contacts' %}">Контакты</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:message_list' %}">Список сообщений</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:mailing_list' %}">Рассылки</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:receive_mail_list' %}">Получатели</a>
+        <a class="p-2 btn btn-outline-primary" href="{% url 'mailing:statistics' %}">Попытка рассылок</a>
         {% if user.is_authenticated %}
         <form method="post" action="{% url 'users:logout' %}" style="display: inline">
             {% csrf_token %}
